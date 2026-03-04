@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouSpo - Downloader</title>
+    <style>
+        body { background: #121212; color: white; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px; }
+        .container { background: #1e1e1e; padding: 30px; border-radius: 15px; width: 450px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .error { color: #ff5555; background: #331a1a; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ff5555; }
+        input { width: 85%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #252525; color: white; }
+        .btn { padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-fetch { background: #1DB954; color: black; }
+        .btn-dl { background: #ff0000; color: white; width: 100%; margin-top: 15px; }
+        .btn:disabled { background: #555; cursor: not-allowed; }
+        
+        /* Spinner Styles */
+        .loader { display: none; margin: 20px auto; border: 4px solid #f3f3f3; border-top: 4px solid #1DB954; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #status-text { display: none; color: #1DB954; font-size: 0.9rem; margin-top: 10px; }
+        
+        .preview { margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; }
+        img { width: 100%; border-radius: 10px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouSpo</h1>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" id="fetch-form">
+            <input type="hidden" name="action" value="fetch">
+            <input type="text" name="link" placeholder="Paste YouTube/Spotify link..." required>
+            <button type="submit" class="btn btn-fetch">Get Data</button>
+        </form>
+
+        {% if data %}
+        <div class="preview" id="preview-section">
+            <img src="{{ data.thumbnail }}">
+            <h3>{{ data.title }}</h3>
+            
+            {% if data.source == 'youtube' %}
+            <form method="POST" onsubmit="showLoading()">
+                <input type="hidden" name="action" value="download">
+                <input type="hidden" name="link" value="{{ data.link }}">
+                <div style="display: flex; gap: 10px;">
+                    <select name="format" style="flex-grow: 1; padding: 10px; border-radius: 8px; background: #252525; color: white; border: 1px solid #333;">
+                        <option value="mp4">Video (MP4)</option>
+                        <option value="mp3">Audio (MP3)</option>
+                    </select>
+                </div>
+                <button type="submit" id="dl-btn" class="btn btn-dl">Download Now</button>
+            </form>
+            
+            <div id="loader" class="loader"></div>
+            <p id="status-text">Processing... this may take up to a minute for high-res videos.</p>
+            {% else %}
+            <p style="color: #bbb;">Spotify detected. Right-click image to save art.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function showLoading() {
+            // Hide the button and show the spinner
+            document.getElementById('dl-btn').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('status-text').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

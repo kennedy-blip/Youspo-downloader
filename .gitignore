@@ -1,0 +1,12 @@
+# Ignore local downloads
+static/downloads/*
+!static/downloads/.gitkeep
+
+# Ignore Windows binaries (Render won't use these)
+ffmpeg.exe
+ffprobe.exe
+
+# Ignore Python environment and secrets
+__pycache__/
+.env
+venv/
