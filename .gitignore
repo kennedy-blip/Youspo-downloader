@@ -14,4 +14,4 @@ ffprobe.exe
 ffplay.exe
 
 # SECRETS (Do not push these!)
-cookies.txt
+youtubecookies.txt
