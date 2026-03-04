@@ -5,6 +5,7 @@ static/downloads/*
 # Ignore Windows binaries (Render won't use these)
 ffmpeg.exe
 ffprobe.exe
+ffplay.exe
 
 # Ignore Python environment and secrets
 __pycache__/
