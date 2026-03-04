@@ -1,13 +1,17 @@
-# Ignore local downloads
+# Python files
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Media & Binaries
 static/downloads/*
 !static/downloads/.gitkeep
-
-# Ignore Windows binaries (Render won't use these)
+ffmpeg
 ffmpeg.exe
+ffprobe
 ffprobe.exe
 ffplay.exe
 
-# Ignore Python environment and secrets
-__pycache__/
-.env
-venv/
+# SECRETS (Do not push these!)
+cookies.txt
